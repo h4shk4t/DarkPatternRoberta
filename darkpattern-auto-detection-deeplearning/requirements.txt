@@ -1,0 +1,19 @@
+# python==3.9.0
+requests>=2.27.1,<3.0.0
+scikit-learn>=1.0.2,<2.0.0
+torch>=1.10.2
+pytest>=7.0.1,<8.0.0
+matplotlib>=3.5.1,<4.0.0
+# sklearn
+torchtext>=0.12.0,<1.0.0
+transformers>=4.17.0,<5.0.0
+# pandas==1.2.0
+hydra-core>=1.1.1,<2.0.0
+wandb>=0.12.21,<1.0.0
+mypy>=0.931,<1.0.0
+isort>=5.10.1,<6.0.0
+flake8>=4.0.1,<5.0.0
+black>=22.1.0,<23.0.0
+types-requests>=2.27.10,<3.0.0
+pyproject-flake8>=0.0.1-alpha.3,<1.0.0
+notebook>=6.4.12,<7.0.0

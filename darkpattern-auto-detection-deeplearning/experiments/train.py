@@ -1,3 +1,4 @@
+import logging
 from os.path import join
 from typing import List
 
@@ -5,21 +6,27 @@ import hydra
 import numpy as np
 import pandas as pd
 import torch
-from const.path import CONFIG_PATH, DATASET_TSV_PATH, NN_MODEL_PICKLES_PATH
+from huggingface_hub import HfFolder
 from omegaconf import DictConfig
 from sklearn import metrics
 from sklearn.model_selection import StratifiedKFold
+from sklearn.preprocessing import LabelEncoder
 from torch import nn
 from torch.nn import functional as F
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import LinearLR
 from torch.utils.data import DataLoader, Subset
-from trainer.trainer import Trainer
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+from const.path import CONFIG_PATH, DATASET_TSV_PATH, NN_MODEL_PICKLES_PATH
+from trainer.trainer import Trainer
 from utils.dataset import DarkpatternDataset
 from utils.random_seed import set_random_seed
 from utils.text import text_to_tensor as _text_to_tensor
 
+logger = logging.getLogger(__name__)
+# Set info color to blue
+logging.addLevelName(logging.INFO, "\033[1;34m%s\033[1;0m" % logging.getLevelName(logging.INFO))
 
 def cross_validation(
     n_fold: int,
@@ -32,14 +39,16 @@ def cross_validation(
     epochs: int,
     save_model: bool,
     device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-    num_labels: int = 2,
+    num_labels: int = 8,
 ) -> None:
     """
     Load & Define dataset.
     """
     df = pd.read_csv(DATASET_TSV_PATH, sep="\t", encoding="utf-8")
     texts = df.text.tolist()
-    labels = df.label.tolist()
+    # labels = df.label.tolist()
+    label_encoder = LabelEncoder()
+    labels = label_encoder.fit_transform(df['Pattern Category'].tolist())
 
     tokenizer = AutoTokenizer.from_pretrained(pretrained)
 
@@ -115,7 +124,9 @@ def cross_validation(
         """
         if save_model:
             model_path = join(NN_MODEL_PICKLES_PATH, f"{pretrained}_{fold}.pth")
-            torch.save(net.state_dict(), model_path)
+            # torch.save(net.state_dict(), model_path)
+            net.save_pretrained(model_path)
+            net.push_to_hub("h4shk4t/darkpatternLLM")
 
     """
     Display evaluation result on console.
@@ -176,7 +187,7 @@ def main(cfg: DictConfig) -> None:
     save_model = cfg.train.save_model
 
     set_random_seed(cfg.random.seed)
-
+    logger.info("Device:", torch.device("cuda" if torch.cuda.is_available() else "cpu"))
     cross_validation(
         n_fold=n_fold,
         pretrained=pretrained,
