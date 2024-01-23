@@ -111,7 +111,7 @@ def cross_validation(
         recall_score = metrics.recall_score(tgt.numpy(), pred.numpy(), average="macro")
 
         prob = F.softmax(outputs, dim=1)[:, 1]  # outputs: [batch_size, num_labels]
-        roc_auc = metrics.roc_auc_score(tgt.numpy(), prob.numpy())
+        roc_auc = metrics.roc_auc_score(tgt.numpy(), prob.numpy(),multi_class='ovr')
 
         accuracy_scores.append(accuracy_score)
         f1_scores.append(f1_score)
