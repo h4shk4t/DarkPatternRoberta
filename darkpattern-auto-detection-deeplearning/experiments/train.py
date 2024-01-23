@@ -106,9 +106,9 @@ def cross_validation(
         """
         outputs, tgt, pred = trainer.test(test_loader)
         accuracy_score = metrics.accuracy_score(tgt.numpy(), pred.numpy())
-        f1_score = metrics.f1_score(tgt.numpy(), pred.numpy())
-        precision_score = metrics.precision_score(tgt.numpy(), pred.numpy())
-        recall_score = metrics.recall_score(tgt.numpy(), pred.numpy())
+        f1_score = metrics.f1_score(tgt.numpy(), pred.numpy(), average="macro")
+        precision_score = metrics.precision_score(tgt.numpy(), pred.numpy(), average="macro")
+        recall_score = metrics.recall_score(tgt.numpy(), pred.numpy(), average="macro")
 
         prob = F.softmax(outputs, dim=1)[:, 1]  # outputs: [batch_size, num_labels]
         roc_auc = metrics.roc_auc_score(tgt.numpy(), prob.numpy())
