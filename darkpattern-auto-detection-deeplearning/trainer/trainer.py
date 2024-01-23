@@ -4,7 +4,6 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 
-
 class Trainer:
     def __init__(
         self,
