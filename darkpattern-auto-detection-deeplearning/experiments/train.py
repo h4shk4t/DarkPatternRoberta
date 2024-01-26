@@ -111,15 +111,17 @@ def cross_validation(
 
         prob = F.softmax(outputs, dim=1)  # outputs: [batch_size, num_labels]
         print("[*] prob: ", prob[:5])
+        print("[*] target: ", tgt[:5])
+        print("[*] target unique classes: ", np.unique(tgt.numpy()))
         print("Prob.shape: ",prob.numpy().shape)
         print("tagt.shape: ",tgt.numpy().shape)
-        roc_auc = metrics.roc_auc_score(tgt.numpy(), prob[:,-1].detach().numpy(),multi_class='ovr')
+        # roc_auc = metrics.roc_auc_score(tgt.numpy(), prob[:,-1].detach().numpy(),multi_class='ovr')
 
         accuracy_scores.append(accuracy_score)
         f1_scores.append(f1_score)
         precision_scores.append(precision_score)
         recall_scores.append(recall_score)
-        roc_auc_scores.append(roc_auc)
+        # roc_auc_scores.append(roc_auc)
 
         """
         Save model.
