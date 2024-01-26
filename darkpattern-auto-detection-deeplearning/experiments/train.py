@@ -110,11 +110,11 @@ def cross_validation(
         recall_score = metrics.recall_score(tgt.numpy(), pred.numpy(), average="macro")
 
         prob = F.softmax(outputs, dim=1)  # outputs: [batch_size, num_labels]
-        print("[*] prob: ", prob[:5])
-        print("[*] target: ", tgt[:5])
+        # print("[*] prob: ", prob[:5])
+        # print("[*] target: ", tgt[:5])
         print("[*] target unique classes: ", np.unique(tgt.numpy()))
-        print("Prob.shape: ",prob.numpy().shape)
-        print("tagt.shape: ",tgt.numpy().shape)
+        # print("Prob.shape: ",prob.numpy().shape)
+        # print("tagt.shape: ",tgt.numpy().shape)
         # roc_auc = metrics.roc_auc_score(tgt.numpy(), prob[:,-1].detach().numpy(),multi_class='ovr')
 
         accuracy_scores.append(accuracy_score)
@@ -130,8 +130,8 @@ def cross_validation(
             model_path = join(NN_MODEL_PICKLES_PATH, f"{pretrained}_{fold}.pth")
             # torch.save(net.state_dict(), model_path)
             net.save_pretrained(model_path)
-            # tokenizer.push_to_hub("h4shk4t/darkpatternLLM")
-            # net.push_to_hub("h4shk4t/darkpatternLLM")
+            tokenizer.push_to_hub("h4shk4t/darkpatternLLM-multiclass")
+            net.push_to_hub("h4shk4t/darkpatternLLM-multiclass")
 
     """
     Display evaluation result on console.
