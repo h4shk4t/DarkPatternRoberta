@@ -73,7 +73,6 @@ def cross_validation(
         """
         Define train & test dataset.
         """
-
         train_ds = Subset(ds, train_idx)
         test_ds = Subset(ds, test_idx)
         train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
@@ -128,7 +127,8 @@ def cross_validation(
             model_path = join(NN_MODEL_PICKLES_PATH, f"{pretrained}_{fold}.pth")
             # torch.save(net.state_dict(), model_path)
             net.save_pretrained(model_path)
-            net.push_to_hub("h4shk4t/darkpatternLLM")
+            # tokenizer.push_to_hub("h4shk4t/darkpatternLLM")
+            # net.push_to_hub("h4shk4t/darkpatternLLM")
 
     """
     Display evaluation result on console.

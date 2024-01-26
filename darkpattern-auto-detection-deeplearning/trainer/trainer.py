@@ -4,6 +4,7 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 
+
 class Trainer:
     def __init__(
         self,
@@ -95,11 +96,12 @@ class Trainer:
         for i, (input_test, target) in enumerate(test_loader):
             input_test = input_test.to(self.device)
             target = target.to(self.device)
+            print("[*] Target shape before val_step: ", target.shape)
             _, output = self.val_step(input_test, target)
 
             output = output.to("cpu")
             target = target.to("cpu")
-
+            print("[*] Target shape after val_step: ", target.shape)
             pred = output.argmax(dim=-1)
 
             outputs = torch.cat((outputs, output), dim=0)
