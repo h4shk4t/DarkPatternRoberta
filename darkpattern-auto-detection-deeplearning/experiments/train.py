@@ -128,10 +128,10 @@ def cross_validation(
         """
         if save_model:
             model_path = join(NN_MODEL_PICKLES_PATH, f"{pretrained}_{fold}.pth")
-            # torch.save(net.state_dict(), model_path)
-            net.save_pretrained(model_path)
-            tokenizer.push_to_hub("h4shk4t/darkpatternLLM-multiclass")
-            net.push_to_hub("h4shk4t/darkpatternLLM-multiclass")
+            torch.save(net.state_dict(), model_path)
+            # net.save_pretrained(model_path)
+            # tokenizer.push_to_hub("h4shk4t/darkpatternLLM-multiclass")
+            # net.push_to_hub("h4shk4t/darkpatternLLM-multiclass")
 
     """
     Display evaluation result on console.
